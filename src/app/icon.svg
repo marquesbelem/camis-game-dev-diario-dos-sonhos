@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="ds-bg" x1="12" y1="8" x2="116" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00B4F5" />
+      <stop offset="55%" stop-color="#00A1E0" />
+      <stop offset="100%" stop-color="#0077A8" />
+    </linearGradient>
+    <mask id="ds-moon">
+      <rect width="128" height="128" fill="white" />
+      <circle cx="67" cy="37" r="21" fill="black" />
+    </mask>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#ds-bg)" />
+  <circle cx="55" cy="44" r="22" fill="#FFA300" mask="url(#ds-moon)" />
+  <path
+    d="M92 25L95.5 34.5L105 38L95.5 41.5L92 51L88.5 41.5L79 38L88.5 34.5L92 25Z"
+    fill="#FFFFFF"
+  />
+  <path
+    d="M23 79C38 71.5 55 75 64 84C73 75 90 71.5 105 79V103C90 96.5 74 99 64 107C54 99 38 96.5 23 103V79Z"
+    fill="#FFFFFF"
+  />
+  <path
+    d="M64 84V105"
+    stroke="#0077A8"
+    stroke-opacity="0.65"
+    stroke-width="3.2"
+    stroke-linecap="round"
+  />
+</svg>
