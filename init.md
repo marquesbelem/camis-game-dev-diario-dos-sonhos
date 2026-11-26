@@ -22,3 +22,6 @@ comercialização. A violação de quaisquer desses direitos exclusivos do t
 <img width="610" height="1356" alt="WhatsApp Image 2026-11-26 at 19 15 13 (1)" src="https://github.com/user-attachments/assets/ee43b79c-67d9-47f7-a611-ab38fb8ca83b" />
 <img width="610" height="1356" alt="WhatsApp Image 2026-11-26 at 19 15 13 (2)" src="https://github.com/user-attachments/assets/0e05f5f3-b4b6-441e-a817-222be104b1e3" />
 <img width="610" height="1356" alt="WhatsApp Image 2026-11-26 at 19 15 13 (3)" src="https://github.com/user-attachments/assets/5823b127-8596-480a-8dee-8d858b953303" />
+
+
+Importante: gere um arquivo com o nome de "README.md" e adicione as informações (em portugues) necessarias
