@@ -4,6 +4,7 @@ import "./globals.css";
 import { MobileInstallPrompt } from "@/components/MobileInstallPrompt";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SITE_CONFIG } from "@/config/site";
+import { Analytics } from "@vercel/analytics/next";
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -104,6 +105,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
           <MobileInstallPrompt />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
