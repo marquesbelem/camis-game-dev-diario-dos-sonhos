@@ -6,11 +6,12 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { ArrowRight, BookOpenCheck, ShieldCheck } from "lucide-react";
 import { db, deleteDreamEntry } from "@/lib/db";
 import { computeGamificationStats } from "@/lib/gamification";
+import { playSfx } from "@/lib/sound-effects";
 import type { DreamEntry } from "@/lib/types";
 import { useTodayDateString } from "@/lib/use-today";
 import { BookAffiliateBanner } from "./BookAffiliateBanner";
 import { BottomNav, type AppTab } from "./BottomNav";
-import { DreamForm } from "./DreamForm";
+import { DreamForm, type SaveCelebration } from "./DreamForm";
 import { DreamList } from "./DreamList";
 import { ExplorerDashboard } from "./ExplorerDashboard";
 import { Footer } from "./Footer";
@@ -55,17 +56,42 @@ export function DreamJournalApp() {
 
   async function handleDeleteDream(id: number) {
     await deleteDreamEntry(id);
+    playSfx("delete");
     showToast("Registro removido do diário local.");
   }
 
-  function handleSaved(_savedId: number, isEdit: boolean) {
+  function handleSaved(
+    _savedId: number,
+    isEdit: boolean,
+    celebration?: SaveCelebration
+  ) {
     setEditingDream(null);
     setActiveTab("diary");
-    showToast(
-      isEdit
-        ? "Sonho e confirmação atualizados com sucesso!"
-        : "Sonho registrado! Você avançou na sua jornada."
-    );
+
+    if (celebration?.leveledUpTo || celebration?.unlockedBadgeTitle) {
+      playSfx("achievement");
+      if (celebration.leveledUpTo && celebration.unlockedBadgeTitle) {
+        showToast(
+          `Subiu para o Nível ${celebration.leveledUpTo.level} (${celebration.leveledUpTo.title}) e desbloqueou "${celebration.unlockedBadgeTitle}"!`
+        );
+      } else if (celebration.leveledUpTo) {
+        showToast(
+          `Parabéns! Você alcançou o Nível ${celebration.leveledUpTo.level}: ${celebration.leveledUpTo.title}!`
+        );
+      } else {
+        showToast(
+          `Conquista desbloqueada: "${celebration.unlockedBadgeTitle}"! Registro salvo.`
+        );
+      }
+    } else {
+      playSfx("save");
+      showToast(
+        isEdit
+          ? "Sonho e confirmação atualizados com sucesso!"
+          : "Sonho registrado! Você avançou na sua jornada."
+      );
+    }
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 

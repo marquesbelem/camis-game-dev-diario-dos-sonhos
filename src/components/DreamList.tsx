@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { BookOpen, PlusCircle, Search } from "lucide-react";
 import { classifyCecScore } from "@/lib/cec-scale";
 import { isPendingSevenDayReview } from "@/lib/gamification";
+import { playSfx } from "@/lib/sound-effects";
 import type { CecCategory, DreamEntry } from "@/lib/types";
 import { useTodayDateString } from "@/lib/use-today";
 import { DreamCard } from "./DreamCard";
@@ -115,7 +116,10 @@ export function DreamList({
             <button
               key={item.id}
               type="button"
-              onClick={() => setFilter(item.id)}
+              onClick={() => {
+                playSfx("chip");
+                setFilter(item.id);
+              }}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
                 filter === item.id
                   ? "bg-slate-900 text-white dark:bg-sky-400 dark:text-slate-950"

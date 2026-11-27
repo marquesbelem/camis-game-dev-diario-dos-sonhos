@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { classifyCecScore } from "@/lib/cec-scale";
 import { isPendingSevenDayReview } from "@/lib/gamification";
+import { playSfx } from "@/lib/sound-effects";
 import type { DreamEntry } from "@/lib/types";
 import { useTodayDateString } from "@/lib/use-today";
 
@@ -63,6 +64,7 @@ export function DreamCard({ dream, onEdit, onDelete }: DreamCardProps) {
 
     try {
       await navigator.clipboard.writeText(lines);
+      playSfx("copy");
       setCopiedSummary(true);
       setTimeout(() => setCopiedSummary(false), 2500);
     } catch {

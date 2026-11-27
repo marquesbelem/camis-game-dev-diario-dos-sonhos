@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { exportAllDreamsJson, importDreamsFromJson } from "@/lib/db";
 import type { GamificationStats } from "@/lib/gamification";
+import { playSfx } from "@/lib/sound-effects";
 import type { DreamEntry } from "@/lib/types";
 
 interface ExplorerDashboardProps {
@@ -36,6 +37,7 @@ export function ExplorerDashboard({
     link.download = `diario-dos-sonhos-backup-${new Date().toISOString().slice(0, 10)}.json`;
     link.click();
     URL.revokeObjectURL(url);
+    playSfx("copy");
     setBackupFeedback("Backup JSON exportado com sucesso!");
   }
 
@@ -45,8 +47,10 @@ export function ExplorerDashboard({
     try {
       const content = await file.text();
       const count = await importDreamsFromJson(content);
+      playSfx("save");
       setBackupFeedback(`${count} registro(s) importado(s) para seu diário local.`);
     } catch (err) {
+      playSfx("error");
       setBackupFeedback(
         err instanceof Error ? err.message : "Erro ao importar arquivo JSON."
       );

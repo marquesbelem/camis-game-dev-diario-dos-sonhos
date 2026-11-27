@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Flame, Sparkles } from "lucide-react";
 import { AppLogo } from "./AppLogo";
+import { SoundToggle } from "./SoundToggle";
 import { ThemeToggle } from "./ThemeToggle";
 
 interface HeaderProps {
@@ -49,6 +50,7 @@ export function Header({ level = 1, streak = 0, onLogoClick }: HeaderProps) {
             <span className="font-display-num text-[11px]">Nv.{level}</span>
           </div>
 
+          <SoundToggle />
           <ThemeToggle />
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check, Copy, Heart } from "lucide-react";
 import { SITE_CONFIG, isPlaceholderValue } from "@/config/site";
+import { playSfx } from "@/lib/sound-effects";
 
 export function PixSupportCard() {
   const [copied, setCopied] = useState(false);
@@ -11,6 +12,7 @@ export function PixSupportCard() {
   async function handleCopyPix() {
     try {
       await navigator.clipboard.writeText(SITE_CONFIG.pix.key);
+      playSfx("copy");
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {

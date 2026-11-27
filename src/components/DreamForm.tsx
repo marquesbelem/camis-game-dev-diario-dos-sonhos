@@ -21,7 +21,9 @@ import {
   calculateCecTotal,
   classifyCecScore,
 } from "@/lib/cec-scale";
-import { createDreamEntry, updateDreamEntry } from "@/lib/db";
+import { createDreamEntry, db, updateDreamEntry } from "@/lib/db";
+import { computeGamificationStats } from "@/lib/gamification";
+import { playScaleStep, playSfx } from "@/lib/sound-effects";
 import type {
   ClarityScore,
   ConfirmationScore,
@@ -31,9 +33,18 @@ import type {
 } from "@/lib/types";
 import { useTodayDateString } from "@/lib/use-today";
 
+export interface SaveCelebration {
+  leveledUpTo?: { level: number; title: string };
+  unlockedBadgeTitle?: string;
+}
+
 interface DreamFormProps {
   initialDream?: DreamEntry | null;
-  onSaved: (savedId: number, isEdit: boolean) => void;
+  onSaved: (
+    savedId: number,
+    isEdit: boolean,
+    celebration?: SaveCelebration
+  ) => void;
   onCancel?: () => void;
 }
 
@@ -116,6 +127,7 @@ export function DreamForm({
   );
 
   function toggleChip(list: string[], value: string, setter: (v: string[]) => void) {
+    playSfx("chip");
     if (list.includes(value)) {
       setter(list.filter((item) => item !== value));
     } else {
@@ -131,10 +143,15 @@ export function DreamForm({
     if (cleaned.length === 0) return;
 
     const merged = [...symbols];
+    let addedAny = false;
     for (const item of cleaned) {
       if (!merged.some((existing) => existing.toLowerCase() === item.toLowerCase())) {
         merged.push(item);
+        addedAny = true;
       }
+    }
+    if (addedAny) {
+      playSfx("tagAdd");
     }
     setSymbols(merged);
     setSymbolInput("");
@@ -143,6 +160,7 @@ export function DreamForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!narrative.trim()) {
+      playSfx("error");
       setErrorMsg(
         "Descreva pelo menos alguns flashes, sensações ou cenas do sonho antes de salvar."
       );
@@ -188,14 +206,35 @@ export function DreamForm({
           : initialDream?.reviewedAt,
       };
 
+      const beforeDreams = await db.dreams.toArray();
+      const beforeStats = computeGamificationStats(beforeDreams, todayStr);
+      const beforeUnlocked = new Set(
+        beforeStats.badges.filter((b) => b.unlocked).map((b) => b.id)
+      );
+
+      let savedId: number;
       if (isEdit && initialDream?.id) {
         await updateDreamEntry(initialDream.id, payload);
-        onSaved(initialDream.id, true);
+        savedId = initialDream.id;
       } else {
-        const newId = await createDreamEntry(payload);
-        onSaved(newId, false);
+        savedId = await createDreamEntry(payload);
       }
+
+      const afterDreams = await db.dreams.toArray();
+      const afterStats = computeGamificationStats(afterDreams, todayStr);
+      const newlyUnlocked = afterStats.badges.find(
+        (b) => b.unlocked && !beforeUnlocked.has(b.id)
+      );
+
+      onSaved(savedId, isEdit, {
+        leveledUpTo:
+          afterStats.level > beforeStats.level
+            ? { level: afterStats.level, title: afterStats.levelTitle }
+            : undefined,
+        unlockedBadgeTitle: newlyUnlocked?.title,
+      });
     } catch {
+      playSfx("error");
       setErrorMsg("Não foi possível salvar no banco local. Tente novamente.");
     } finally {
       setSaving(false);
@@ -327,9 +366,10 @@ export function DreamForm({
                   <button
                     type="button"
                     aria-label={`Remover símbolo ${sym}`}
-                    onClick={() =>
-                      setSymbols(symbols.filter((item) => item !== sym))
-                    }
+                    onClick={() => {
+                      playSfx("delete");
+                      setSymbols(symbols.filter((item) => item !== sym));
+                    }}
                     className="rounded-full p-0.5 hover:bg-blue-200/70 dark:hover:bg-sky-500/30"
                   >
                     <X className="h-3 w-3" />
@@ -384,7 +424,10 @@ export function DreamForm({
               <button
                 key={opt.value}
                 type="button"
-                onClick={() => setClarity(opt.value)}
+                onClick={() => {
+                  playScaleStep(opt.value);
+                  setClarity(opt.value);
+                }}
                 className={`rounded-full py-2 text-sm font-bold transition ${
                   clarity === opt.value
                     ? "bg-blue-600 text-white shadow-sm dark:bg-blue-500"
@@ -415,7 +458,10 @@ export function DreamForm({
               <button
                 key={opt.value}
                 type="button"
-                onClick={() => setEmotion(opt.value)}
+                onClick={() => {
+                  playScaleStep(opt.value);
+                  setEmotion(opt.value);
+                }}
                 className={`rounded-full py-2 text-sm font-bold transition ${
                   emotion === opt.value
                     ? "bg-blue-600 text-white shadow-sm dark:bg-blue-500"
@@ -441,7 +487,10 @@ export function DreamForm({
                 <button
                   key={val.id}
                   type="button"
-                  onClick={() => setEmotionalValence(val.id)}
+                  onClick={() => {
+                    playSfx("chip");
+                    setEmotionalValence(val.id);
+                  }}
                   className={`rounded-full px-3 py-1 text-[11px] font-semibold transition ${
                     emotionalValence === val.id
                       ? "bg-white text-slate-900 shadow-sm dark:bg-slate-950 dark:text-sky-300"
@@ -470,7 +519,10 @@ export function DreamForm({
               <button
                 key={opt.value}
                 type="button"
-                onClick={() => setConfirmation(opt.value)}
+                onClick={() => {
+                  playScaleStep(opt.value);
+                  setConfirmation(opt.value);
+                }}
                 className={`rounded-full py-2 text-sm font-bold transition ${
                   confirmation === opt.value
                     ? "bg-blue-600 text-white shadow-sm dark:bg-blue-500"
@@ -576,7 +628,10 @@ export function DreamForm({
       <div className="rounded-3xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <button
           type="button"
-          onClick={() => setShowExtraContext((prev) => !prev)}
+          onClick={() => {
+            playSfx("tab");
+            setShowExtraContext((prev) => !prev);
+          }}
           className="flex w-full items-center justify-between px-5 py-4 text-left text-sm font-bold text-slate-900 dark:text-white sm:px-6"
         >
           <span>Contexto do sono (como dormiu, horário e local)</span>
@@ -709,7 +764,10 @@ export function DreamForm({
       <div className="rounded-3xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <button
           type="button"
-          onClick={() => setShowCompass((prev) => !prev)}
+          onClick={() => {
+            playSfx("tab");
+            setShowCompass((prev) => !prev);
+          }}
           className="flex w-full items-center justify-between px-5 py-4 text-left text-sm font-bold text-slate-900 dark:text-white sm:px-6"
         >
           <span>Reflexão, Bússola dos 3 Cs e Revisão posterior</span>
