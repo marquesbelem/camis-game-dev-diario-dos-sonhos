@@ -1,5 +1,7 @@
 # Diário dos Sonhos — Escala CEC
 
+![Banner Diário dos Sonhos — Camis GameDev](public/portfolio-banner.png)
+
 Plataforma web **mobile-first**, gratuita e sem fins lucrativos para registro estruturado de sonhos e acompanhamento da **Escala CEC (Clareza, Emoção e Confirmação)**.
 
 > **Referência e Direitos Autorais:** Esta plataforma é uma iniciativa independente, gratuita e não comercial, inspirada nos conceitos do livro ***Sonhos e Mediunidade na Umbanda***, de **Rodrigo Queiroz**. O sistema não reproduz, edita nem substitui a obra original (respeitando integralmente a Lei nº 9.610/1998) — funciona apenas como caderno digital interativo de apoio ao estudo pessoal.
@@ -22,7 +24,7 @@ Plataforma web **mobile-first**, gratuita e sem fins lucrativos para registro es
   - **Mapa de Símbolos Recorrentes** e distribuição estatística pela Escala CEC.
 - **Partilha Ética e Responsável:** Botão para copiar um resumo organizado caso o usuário queira dialogar com seu dirigente espiritual, grupo de estudos ou terapeuta.
 - **Identidade Visual Camis GameDev (Tema 1):** Tema Claro como padrão obrigatório com alternância opcional para Tema Escuro, cantos arredondados e assinatura oficial no rodapé.
-- **SEO & PWA:** Metadados completos em português, `sitemap.xml`, `robots.txt`, `manifest.webmanifest`, imagem Open Graph dinâmica, JSON-LD (`WebApplication` e `FAQPage`) e página educativa estática em `/guia-escala-cec`.
+- **SEO & PWA:** Metadados completos em português, `sitemap.xml`, `robots.txt`, `manifest.webmanifest`, banners oficiais Open Graph (`1200×630`) e Portfólio (`1920×1080`), JSON-LD (`WebApplication` e `FAQPage`) e página educativa estática em `/guia-escala-cec`.
 
 ---
 

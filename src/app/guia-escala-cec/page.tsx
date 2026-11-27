@@ -19,6 +19,38 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/guia-escala-cec",
   },
+  openGraph: {
+    type: "article",
+    locale: SITE_CONFIG.locale,
+    url: `${SITE_CONFIG.url}/guia-escala-cec`,
+    siteName: SITE_CONFIG.shortName,
+    title: "Guia da Escala CEC — Diário dos Sonhos",
+    description:
+      "Entenda como funciona a Escala CEC, a Bússola dos 3 Cs e o registro matinal de sonhos inspirados no livro Sonhos e Mediunidade na Umbanda, de Rodrigo Queiroz.",
+    images: [
+      {
+        url: "/og-banner.png",
+        width: 1200,
+        height: 630,
+        type: "image/png",
+        alt: "Diário dos Sonhos — Escala CEC | Desenvolvido por Camis GameDev",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Guia da Escala CEC — Diário dos Sonhos",
+    description:
+      "Entenda como funciona a Escala CEC, a Bússola dos 3 Cs e o registro matinal de sonhos inspirados no livro Sonhos e Mediunidade na Umbanda, de Rodrigo Queiroz.",
+    images: [
+      {
+        url: "/og-banner.png",
+        width: 1200,
+        height: 630,
+        alt: "Diário dos Sonhos — Escala CEC | Desenvolvido por Camis GameDev",
+      },
+    ],
+  },
 };
 
 const FAQ_ITEMS = [

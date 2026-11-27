@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bungee, Raleway, Ubuntu } from "next/font/google";
 import "./globals.css";
+import { MobileInstallPrompt } from "@/components/MobileInstallPrompt";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SITE_CONFIG } from "@/config/site";
 
@@ -54,6 +55,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: SITE_CONFIG.shortName,
+  },
   openGraph: {
     type: "website",
     locale: SITE_CONFIG.locale,
@@ -88,7 +94,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${raleway.variable} ${ubuntu.variable} ${bungee.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
-        <ThemeProvider>{children}</ThemeProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__deferredPwaPrompt=e;});",
+          }}
+        />
+        <ThemeProvider>
+          {children}
+          <MobileInstallPrompt />
+        </ThemeProvider>
       </body>
     </html>
   );

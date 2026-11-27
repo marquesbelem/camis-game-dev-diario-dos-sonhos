@@ -3,7 +3,7 @@ export const SITE_CONFIG = {
   shortName: "Diário dos Sonhos",
   description:
     "Plataforma gratuita e mobile-first para registrar sonhos com a Escala CEC (Clareza, Emoção e Confirmação), inspirada no livro Sonhos e Mediunidade na Umbanda, de Rodrigo Queiroz.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://diariodossonhos.vercel.app",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://diariodossonhosumbanda.vercel.app",
   locale: "pt_BR",
   brand: {
     name: "Camis GameDev",

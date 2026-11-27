@@ -242,7 +242,7 @@ export function DreamForm({
               type="date"
               value={dreamDate}
               onChange={(e) => setDreamDate(e.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+              className="w-full min-w-0 max-w-full rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               required
             />
           </div>
@@ -292,7 +292,7 @@ export function DreamForm({
             <Tag className="h-3.5 w-3.5 text-blue-600 dark:text-sky-400" />
             <span>Símbolos e elementos-chave (opcional, +15 XP)</span>
           </label>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <input
               id="symbol-input"
               type="text"
@@ -304,15 +304,15 @@ export function DreamForm({
                   addSymbolTag();
                 }
               }}
-              placeholder="Ex.: água, vela, mata, escada (Enter para adicionar)"
-              className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+              placeholder="Ex.: água, vela, mata, escada (separe por vírgula)"
+              className="w-full min-w-0 rounded-full border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:bg-white sm:flex-1 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
             />
             <button
               type="button"
               onClick={addSymbolTag}
-              className="inline-flex items-center gap-1 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 dark:bg-sky-400 dark:text-slate-950 dark:hover:bg-sky-300"
+              className="inline-flex w-full shrink-0 items-center justify-center gap-1.5 rounded-full bg-slate-900 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-slate-800 sm:w-auto dark:bg-sky-400 dark:text-slate-950 dark:hover:bg-sky-300"
             >
-              <Plus className="h-3.5 w-3.5" />
+              <Plus className="h-3.5 w-3.5 shrink-0" />
               <span>Adicionar</span>
             </button>
           </div>
